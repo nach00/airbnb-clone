@@ -32,7 +32,7 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
-/public/packs
+# Note: public/packs is included for Heroku deployment
 /public/packs-test
 /node_modules
 /yarn-error.log
