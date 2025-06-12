@@ -1,4 +1,4 @@
-# System Design Document: Full-Stack Airbnb Clone v1
+# System Design Document: Full-Stack Airbnb Clone v1.0
 
 ## 1. Project Overview
 
