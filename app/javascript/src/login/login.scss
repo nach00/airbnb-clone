@@ -1,0 +1,38 @@
+// Import Bootstrap
+@import "bootstrap";
+
+// Login page specific styles
+.login-container {
+  min-height: calc(100vh - 200px);
+  display: flex;
+  align-items: center;
+}
+
+.login-card {
+  border: none;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  
+  .card-body {
+    padding: 2rem;
+  }
+}
+
+.form-control {
+  &:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
+  }
+}
+
+.btn-link {
+  text-decoration: none;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.demo-credentials {
+  font-size: 0.875rem;
+  border-left: 3px solid var(--bs-primary);
+}

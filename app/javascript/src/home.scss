@@ -1,0 +1,20 @@
+// Import Bootstrap
+@import "bootstrap";
+
+// Home page specific styles
+.property-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.property-image {
+  border-radius: 0.375rem 0.375rem 0 0;
+}
+
+.load-more-btn {
+  min-width: 200px;
+}

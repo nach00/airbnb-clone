@@ -10,7 +10,48 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_27_214456) do
+ActiveRecord::Schema[7.2].define(version: 2025_06_12_052555) do
+  create_table "bookings", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "property_id", null: false
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.integer "guests", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["property_id", "start_date", "end_date"], name: "index_bookings_on_property_id_and_start_date_and_end_date"
+    t.index ["property_id"], name: "index_bookings_on_property_id"
+    t.index ["user_id"], name: "index_bookings_on_user_id"
+  end
+
+  create_table "charges", force: :cascade do |t|
+    t.integer "booking_id", null: false
+    t.string "checkout_session_id", null: false
+    t.boolean "complete", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["booking_id"], name: "index_charges_on_booking_id"
+    t.index ["checkout_session_id"], name: "index_charges_on_checkout_session_id", unique: true
+  end
+
+  create_table "properties", force: :cascade do |t|
+    t.string "title"
+    t.string "description"
+    t.string "city"
+    t.string "country"
+    t.string "property_type"
+    t.integer "price_per_night"
+    t.integer "max_guests"
+    t.integer "bedrooms"
+    t.integer "beds"
+    t.integer "baths"
+    t.string "image_url"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_properties_on_user_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.string "token"
     t.integer "user_id"
@@ -27,5 +68,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_27_214456) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "bookings", "properties"
+  add_foreign_key "bookings", "users"
+  add_foreign_key "charges", "bookings"
+  add_foreign_key "properties", "users"
   add_foreign_key "sessions", "users"
 end

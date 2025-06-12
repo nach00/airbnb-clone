@@ -1,0 +1,37 @@
+// Import Bootstrap
+@import "bootstrap";
+
+// Import BookingWidget styles
+@import "./bookingWidget";
+
+// Property page specific styles
+.property-image {
+  border-radius: 0.375rem;
+}
+
+.property-stats {
+  .stat-item {
+    padding: 1rem;
+    border-radius: 0.375rem;
+    background-color: var(--bs-light);
+    
+    h5 {
+      color: var(--bs-primary);
+      font-weight: 600;
+    }
+  }
+}
+
+.booking-card {
+  border: 2px solid var(--bs-border-color);
+  
+  &:hover {
+    border-color: var(--bs-primary);
+  }
+}
+
+.breadcrumb {
+  background-color: transparent;
+  padding: 0;
+  margin-bottom: 1rem;
+}
