@@ -2,7 +2,7 @@
   "name": "airbnb-clone",
   "private": true,
   "engines": {
-    "node": "18.x"
+    "node": "16.x"
   },
   "dependencies": {
     "@babel/preset-react": "^7.16.7",
@@ -25,8 +25,7 @@
   },
   "version": "0.1.0",
   "scripts": {
-    "build": "webpack --mode production",
-    "heroku-postbuild": "yarn build"
+    "build": "webpack --mode production"
   },
   "devDependencies": {
     "webpack-dev-server": "^3"
