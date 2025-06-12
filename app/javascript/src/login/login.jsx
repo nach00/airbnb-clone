@@ -33,10 +33,8 @@ class Login extends React.Component {
           loading: false,
         });
 
-        // If already authenticated, redirect
-        if (data.authenticated) {
-          this.handleRedirect();
-        }
+        // Don't auto-redirect if already authenticated
+        // Let the user see they're logged in and choose to go elsewhere
       })
       .catch(error => {
         console.error('Error checking authentication:', error);
