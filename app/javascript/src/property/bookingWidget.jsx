@@ -139,8 +139,9 @@ class BookingWidget extends Component {
       .then(data => {
         if (data.success) {
           // Initialize Stripe and redirect to checkout
-          if (typeof window.Stripe !== 'undefined') {
-            const stripe = window.Stripe(process.env.STRIPE_PUBLISHABLE_KEY);
+          const stripeKey = process.env.STRIPE_PUBLISHABLE_KEY;
+          if (typeof window.Stripe !== 'undefined' && stripeKey && !stripeKey.includes('placeholder')) {
+            const stripe = window.Stripe(stripeKey);
             stripe.redirectToCheckout({
               sessionId: data.checkout_session_id
             }).then(result => {
@@ -152,8 +153,17 @@ class BookingWidget extends Component {
               }
             });
           } else {
+            // For demo purposes, show success message instead of redirecting to Stripe
+            alert(`Booking created successfully! 
+            
+In production, this would redirect to Stripe payment.
+Your booking ID: ${data.charge.booking_id}
+
+To enable payments, set real Stripe API keys in Heroku config.`);
             this.setState({
-              error: 'Payment system not available. Please try again.',
+              startDate: null,
+              endDate: null,
+              guests: 1,
               loading: false
             });
           }
