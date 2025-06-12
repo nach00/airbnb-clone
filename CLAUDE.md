@@ -23,8 +23,9 @@ This project is a full-stack Airbnb clone.
 
 1.  `bundle install`
 2.  `yarn install`
-3.  `rails db:create && rails db:migrate`
-4.  `rails db:seed` (to populate with initial data)
+3.  Copy `.env.example` to `.env` and fill in your Stripe API keys
+4.  `rails db:create && rails db:migrate`
+5.  `rails db:seed` (to populate with initial data)
 
 ## 3. Common Bash Commands
 
