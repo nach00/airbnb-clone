@@ -32,6 +32,7 @@ class LoginWidget extends React.Component {
       return;
     }
 
+    console.log('Submitting login form');
     fetch('/api/sessions', safeCredentials({
       method: 'POST',
       body: JSON.stringify({
@@ -44,6 +45,7 @@ class LoginWidget extends React.Component {
       .then(handleErrors)
       .then(response => response.json())
       .then(data => {
+        console.log('Login response data:', data);
         this.setState({ loading: false });
         if (data.user) {
           this.props.onLoginSuccess(data.user);

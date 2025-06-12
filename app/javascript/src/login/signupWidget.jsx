@@ -62,6 +62,7 @@ class SignupWidget extends React.Component {
 
     const { username, email, password } = this.state;
 
+    console.log('Submitting signup form');
     // First, create the user account
     fetch('/api/users', safeCredentials({
       method: 'POST',
@@ -76,6 +77,7 @@ class SignupWidget extends React.Component {
       .then(handleErrors)
       .then(response => response.json())
       .then(data => {
+        console.log('Signup response data:', data);
         if (data.user) {
           // After successful signup, log the user in
           return this.loginUser(email, password);

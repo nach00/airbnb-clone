@@ -6,7 +6,8 @@ const handleErrors = (response) => {
 };
 
 const safeCredentials = (object) => {
-  const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+  const token = csrfMeta ? csrfMeta.getAttribute('content') : '';
   return Object.assign(object, {
     headers: Object.assign(object.headers || {}, {
       'X-CSRF-Token': token,
