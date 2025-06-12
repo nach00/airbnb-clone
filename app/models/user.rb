@@ -10,7 +10,7 @@ class User < ApplicationRecord
   validates_uniqueness_of :username
   validates_uniqueness_of :email
 
-  after_validation :hash_password
+  before_save :hash_password, if: :password_changed?
 
   private
 

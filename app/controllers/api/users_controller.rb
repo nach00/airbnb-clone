@@ -4,6 +4,13 @@ module Api
       @user = User.new(user_params)
 
       if @user.save
+        # Automatically create a session for the new user
+        session = @user.sessions.create
+        cookies.permanent.signed[:airbnb_session_token] = {
+          value: session.token,
+          httponly: true
+        }
+        
         render 'api/users/create'
       else
         render json: { success: false }

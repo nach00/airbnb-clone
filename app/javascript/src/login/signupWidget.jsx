@@ -79,8 +79,9 @@ class SignupWidget extends React.Component {
       .then(data => {
         console.log('Signup response data:', data);
         if (data.user) {
-          // After successful signup, log the user in
-          return this.loginUser(email, password);
+          // User is now automatically logged in on the backend
+          this.setState({ loading: false });
+          this.props.onSignupSuccess(data.user);
         } else {
           throw new Error('Signup failed');
         }
@@ -94,36 +95,6 @@ class SignupWidget extends React.Component {
       });
   };
 
-  loginUser = (email, password) => {
-    return fetch('/api/sessions', safeCredentials({
-      method: 'POST',
-      body: JSON.stringify({
-        user: {
-          email: email,
-          password: password
-        }
-      })
-    }))
-      .then(handleErrors)
-      .then(response => response.json())
-      .then(data => {
-        this.setState({ loading: false });
-        if (data.user) {
-          this.props.onSignupSuccess(data.user);
-        } else {
-          this.setState({ 
-            error: 'Account created but login failed. Please try logging in manually.' 
-          });
-        }
-      })
-      .catch(error => {
-        console.error('Auto-login error:', error);
-        this.setState({
-          loading: false,
-          error: 'Account created successfully! Please log in manually.'
-        });
-      });
-  };
 
   render() {
     const { username, email, password, confirmPassword, loading, error } = this.state;
