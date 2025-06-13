@@ -1,6 +1,148 @@
 // Import Bootstrap
 @import "bootstrap";
 
+// Virgil Abloh inspired styling - Global CSS variables and overrides
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --abloh-black: #000000;
+  --abloh-white: #ffffff;
+  --abloh-orange: #ff6600;
+  --abloh-gray: #808080;
+  --abloh-light-gray: #f5f5f5;
+  --abloh-yellow: #ffff00;
+  
+  // Override Bootstrap's primary color system
+  --bs-primary: var(--abloh-black);
+  --bs-primary-rgb: 0, 0, 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--abloh-light-gray);
+  color: var(--abloh-black);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+// Global override for any remaining Bootstrap blue
+.text-primary {
+  color: var(--abloh-black) !important;
+}
+
+.btn-outline-primary {
+  color: var(--abloh-black) !important;
+  border-color: var(--abloh-black) !important;
+  
+  &:hover {
+    background-color: var(--abloh-orange) !important;
+    border-color: var(--abloh-black) !important;
+    color: var(--abloh-black) !important;
+  }
+}
+
+// Navigation with industrial feel for login pages
+.navbar {
+  background-color: var(--abloh-white) !important;
+  border-bottom: 3px solid var(--abloh-black) !important;
+  padding: 1rem 0;
+  
+  .navbar-brand {
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--abloh-black) !important;
+    font-size: 1.5rem;
+    
+    &::before {
+      content: '▲';
+      margin-right: 8px;
+      color: var(--abloh-orange);
+    }
+    
+    &::after {
+      content: '▲';
+      margin-left: 8px;
+      color: var(--abloh-orange);
+    }
+  }
+  
+  .nav-link {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--abloh-black) !important;
+    position: relative;
+    
+    &:hover {
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--abloh-orange);
+      }
+    }
+  }
+  
+  .navbar-text {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--abloh-black) !important;
+  }
+  
+  .btn {
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    border: 3px solid var(--abloh-black);
+    background: var(--abloh-yellow);
+    color: var(--abloh-black);
+    padding: 10px 20px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--abloh-orange);
+      transition: left 0.3s ease;
+      z-index: -1;
+    }
+    
+    &::after {
+      content: '▲';
+      margin-left: 6px;
+      font-size: 0.7em;
+      transition: transform 0.3s ease;
+    }
+    
+    &:hover {
+      background: var(--abloh-orange);
+      border-color: var(--abloh-black);
+      color: var(--abloh-black);
+      transform: translateY(-2px);
+      box-shadow: 3px 3px 0px var(--abloh-black);
+      
+      &::before {
+        left: 0;
+      }
+      
+      &::after {
+        transform: rotate(45deg) scale(1.2);
+      }
+    }
+  }
+}
+
 // Login page specific styles
 .login-container {
   min-height: calc(100vh - 200px);
@@ -9,30 +151,172 @@
 }
 
 .login-card {
-  border: none;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  border: 3px solid var(--abloh-black);
+  border-radius: 0;
+  background: var(--abloh-white);
+  box-shadow: 8px 8px 0px var(--abloh-orange);
+  position: relative;
+  
+  &::before {
+    content: 'LOGIN';
+    position: absolute;
+    top: -15px;
+    right: 20px;
+    background: var(--abloh-yellow);
+    color: var(--abloh-black);
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transform: rotate(-3deg);
+    box-shadow: 2px 2px 0px var(--abloh-black);
+  }
   
   .card-body {
-    padding: 2rem;
+    padding: 2.5rem;
   }
 }
 
 .form-control {
+  border: 2px solid var(--abloh-black) !important;
+  border-radius: 0 !important;
+  padding: 12px 16px;
+  font-weight: 500;
+  background: var(--abloh-white);
+  color: var(--abloh-black);
+  
   &:focus {
-    border-color: var(--bs-primary);
-    box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
+    border-color: var(--abloh-orange) !important;
+    box-shadow: 3px 3px 0px var(--abloh-orange) !important;
+    outline: none;
+  }
+  
+  &::placeholder {
+    color: var(--abloh-gray);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+  }
+}
+
+.form-label {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--abloh-black);
+  margin-bottom: 0.75rem;
+  
+  &::before {
+    content: '■';
+    color: var(--abloh-orange);
+    margin-right: 8px;
+    font-size: 0.8em;
+  }
+}
+
+.btn-primary {
+  background: var(--abloh-black) !important;
+  border: 3px solid var(--abloh-black) !important;
+  color: var(--abloh-white) !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+  padding: 16px 32px !important;
+  border-radius: 0 !important;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  width: 100%;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, var(--abloh-orange), var(--abloh-yellow), var(--abloh-orange));
+    transition: left 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: -1;
+  }
+  
+  &::after {
+    content: '→';
+    margin-left: 8px;
+    font-weight: 900;
+    transition: all 0.3s ease;
+  }
+  
+  &:hover {
+    color: var(--abloh-black) !important;
+    border-color: var(--abloh-orange) !important;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 6px 6px 0px var(--abloh-black), 12px 12px 0px var(--abloh-orange);
+    
+    &::before {
+      left: 0;
+    }
+    
+    &::after {
+      transform: translateX(4px) scale(1.2);
+    }
   }
 }
 
 .btn-link {
   text-decoration: none;
+  color: var(--abloh-black) !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  position: relative;
+  
+  &::before {
+    content: '▶';
+    margin-right: 4px;
+    color: var(--abloh-orange);
+    font-size: 0.8em;
+  }
   
   &:hover {
-    text-decoration: underline;
+    color: var(--abloh-orange) !important;
+    text-decoration: none;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--abloh-orange);
+    }
   }
 }
 
 .demo-credentials {
   font-size: 0.875rem;
-  border-left: 3px solid var(--bs-primary);
+  border-left: 4px solid var(--abloh-orange);
+  background: var(--abloh-yellow);
+  color: var(--abloh-black);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1rem;
+  position: relative;
+  
+  &::before {
+    content: 'DEMO';
+    position: absolute;
+    top: -8px;
+    left: 10px;
+    background: var(--abloh-orange);
+    color: var(--abloh-black);
+    padding: 2px 6px;
+    font-size: 0.6rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
 }

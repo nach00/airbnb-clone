@@ -4,6 +4,179 @@
 // Import BookingWidget styles
 @import "./bookingWidget";
 
+// Virgil Abloh inspired styling - Global CSS variables and overrides
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --abloh-black: #000000;
+  --abloh-white: #ffffff;
+  --abloh-orange: #ff6600;
+  --abloh-gray: #808080;
+  --abloh-light-gray: #f5f5f5;
+  --abloh-yellow: #ffff00;
+  
+  // Override Bootstrap's primary color system
+  --bs-primary: var(--abloh-black);
+  --bs-primary-rgb: 0, 0, 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--abloh-light-gray);
+  color: var(--abloh-black);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+// Global override for any remaining Bootstrap blue
+.text-primary {
+  color: var(--abloh-black) !important;
+}
+
+.btn-outline-primary {
+  color: var(--abloh-black) !important;
+  border-color: var(--abloh-black) !important;
+  
+  &:hover {
+    background-color: var(--abloh-orange) !important;
+    border-color: var(--abloh-black) !important;
+    color: var(--abloh-black) !important;
+  }
+}
+
+// Abloh-style headers with quotation marks
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    left: -20px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--abloh-orange);
+  }
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 900;
+  
+  &::after {
+    content: ' ™';
+    font-size: 0.6em;
+    color: var(--abloh-gray);
+    vertical-align: top;
+  }
+}
+
+// Navigation with industrial feel
+.navbar {
+  background-color: var(--abloh-white) !important;
+  border-bottom: 3px solid var(--abloh-black) !important;
+  padding: 1rem 0;
+  
+  .navbar-brand {
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--abloh-black) !important;
+    font-size: 1.5rem;
+    
+    &::before {
+      content: '▲';
+      margin-right: 8px;
+      color: var(--abloh-orange);
+    }
+    
+    &::after {
+      content: '▲';
+      margin-left: 8px;
+      color: var(--abloh-orange);
+    }
+  }
+  
+  .nav-link {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--abloh-black) !important;
+    position: relative;
+    
+    &:hover {
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--abloh-orange);
+      }
+    }
+  }
+  
+  .navbar-text {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--abloh-black) !important;
+  }
+  
+  .btn {
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    border: 3px solid var(--abloh-black);
+    background: var(--abloh-yellow);
+    color: var(--abloh-black);
+    padding: 10px 20px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--abloh-orange);
+      transition: left 0.3s ease;
+      z-index: -1;
+    }
+    
+    &::after {
+      content: '▲';
+      margin-left: 6px;
+      font-size: 0.7em;
+      transition: transform 0.3s ease;
+    }
+    
+    &:hover {
+      background: var(--abloh-orange);
+      border-color: var(--abloh-black);
+      color: var(--abloh-black);
+      transform: translateY(-2px);
+      box-shadow: 3px 3px 0px var(--abloh-black);
+      
+      &::before {
+        left: 0;
+      }
+      
+      &::after {
+        transform: rotate(45deg) scale(1.2);
+      }
+    }
+  }
+}
+
 // Virgil Abloh inspired property page styling
 .property-image {
   border-radius: 0;
