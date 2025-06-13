@@ -26,32 +26,27 @@ const Layout = ({ children, user, onLogout }) => {
               </li>
               {user ? (
                 <>
-                  <li className="nav-item dropdown">
-                    <a 
-                      className="nav-link dropdown-toggle" 
-                      href="#" 
-                      id="navbarDropdown" 
-                      role="button" 
-                      data-bs-toggle="dropdown"
+                  <li className="nav-item">
+                    <a className="nav-link" href="/my-bookings">My Bookings</a>
+                  </li>
+                  <li className="nav-item">
+                    <a className="nav-link" href="/host-bookings">Host Bookings</a>
+                  </li>
+                  <li className="nav-item">
+                    <a className="nav-link" href="/add-property">Add Property</a>
+                  </li>
+                  <li className="nav-item">
+                    <span className="navbar-text me-3">
+                      Welcome, {user.username}!
+                    </span>
+                  </li>
+                  <li className="nav-item">
+                    <button 
+                      className="btn btn-outline-primary btn-sm"
+                      onClick={onLogout}
                     >
-                      {user.username}
-                    </a>
-                    <ul className="dropdown-menu">
-                      <li><a className="dropdown-item" href="/my-bookings">My Bookings</a></li>
-                      <li><a className="dropdown-item" href="/host-bookings">Host Bookings</a></li>
-                      <li><hr className="dropdown-divider" /></li>
-                      <li><a className="dropdown-item" href="/add-property">Add Property</a></li>
-                      <li><hr className="dropdown-divider" /></li>
-                      <li>
-                        <button 
-                          className="dropdown-item btn btn-link"
-                          onClick={onLogout}
-                          style={{border: 'none', background: 'none', width: '100%', textAlign: 'left'}}
-                        >
-                          Logout
-                        </button>
-                      </li>
-                    </ul>
+                      Logout
+                    </button>
                   </li>
                 </>
               ) : (
