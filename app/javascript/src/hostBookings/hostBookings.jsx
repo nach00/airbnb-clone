@@ -7,40 +7,13 @@ class HostBookings extends Component {
     this.state = {
       bookings: [],
       loading: true,
-      error: '',
-      isAuthenticated: false,
-      checkingAuth: true
+      error: ''
     };
   }
 
   componentDidMount() {
-    this.checkAuthentication();
+    this.fetchBookings();
   }
-
-  checkAuthentication = () => {
-    fetch('/api/authenticated')
-      .then(handleErrors)
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          isAuthenticated: data.authenticated,
-          checkingAuth: false
-        });
-        
-        if (data.authenticated) {
-          this.fetchBookings();
-        } else {
-          this.setState({ loading: false });
-        }
-      })
-      .catch(() => {
-        this.setState({
-          isAuthenticated: false,
-          checkingAuth: false,
-          loading: false
-        });
-      });
-  };
 
   fetchBookings = () => {
     fetch('/api/host-bookings', safeCredentials())
@@ -69,44 +42,7 @@ class HostBookings extends Component {
   };
 
   render() {
-    const { bookings, loading, error, isAuthenticated, checkingAuth } = this.state;
-
-    if (checkingAuth) {
-      return (
-        <div className="container my-5">
-          <div className="row justify-content-center">
-            <div className="col-md-6">
-              <div className="card">
-                <div className="card-body text-center">
-                  <div className="spinner-border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                  </div>
-                  <p className="mt-3">Checking authentication...</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    if (!isAuthenticated) {
-      return (
-        <div className="container my-5">
-          <div className="row justify-content-center">
-            <div className="col-md-6">
-              <div className="card text-center">
-                <div className="card-body">
-                  <h2>Please Log In</h2>
-                  <p>You need to be logged in to view your property bookings.</p>
-                  <a href="/login" className="btn btn-primary">Go to Login</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    }
+    const { bookings, loading, error } = this.state;
 
     if (loading) {
       return (
