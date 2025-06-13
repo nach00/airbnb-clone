@@ -13,12 +13,39 @@ class Home extends React.Component {
       currentPage: 1,
       loading: false,
       error: null,
+      user: null,
+      isAuthenticated: false,
+      authLoading: true,
     };
   }
 
   componentDidMount() {
+    this.checkAuthentication();
     this.loadProperties();
   }
+
+  checkAuthentication = () => {
+    fetch('/api/authenticated', safeCredentials({
+      method: 'GET',
+    }))
+      .then(handleErrors)
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          isAuthenticated: data.authenticated,
+          user: data.user || null,
+          authLoading: false,
+        });
+      })
+      .catch(error => {
+        console.error('Error checking authentication:', error);
+        this.setState({ 
+          isAuthenticated: false,
+          user: null,
+          authLoading: false,
+        });
+      });
+  };
 
   loadProperties = (page = 1) => {
     this.setState({ loading: true, error: null });
@@ -60,11 +87,28 @@ class Home extends React.Component {
     }).format(price);
   };
 
+  handleLogout = () => {
+    fetch('/api/sessions', safeCredentials({
+      method: 'DELETE',
+    }))
+      .then(handleErrors)
+      .then(() => {
+        this.setState({
+          isAuthenticated: false,
+          user: null,
+        });
+        window.location.href = '/';
+      })
+      .catch(error => {
+        console.error('Error logging out:', error);
+      });
+  };
+
   render() {
-    const { properties, loading, error, nextPage } = this.state;
+    const { properties, loading, error, nextPage, user } = this.state;
 
     return (
-      <Layout>
+      <Layout user={user} onLogout={this.handleLogout}>
         <div className="row">
           <div className="col-12">
             <h1 className="mb-4">Find Your Perfect Stay</h1>

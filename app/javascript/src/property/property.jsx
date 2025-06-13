@@ -11,15 +11,42 @@ class Property extends React.Component {
       property: null,
       loading: false,
       error: null,
+      user: null,
+      isAuthenticated: false,
+      authLoading: true,
     };
   }
 
   componentDidMount() {
+    this.checkAuthentication();
     const propertyId = this.props.propertyId;
     if (propertyId) {
       this.loadProperty(propertyId);
     }
   }
+
+  checkAuthentication = () => {
+    fetch('/api/authenticated', safeCredentials({
+      method: 'GET',
+    }))
+      .then(handleErrors)
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          isAuthenticated: data.authenticated,
+          user: data.user || null,
+          authLoading: false,
+        });
+      })
+      .catch(error => {
+        console.error('Error checking authentication:', error);
+        this.setState({ 
+          isAuthenticated: false,
+          user: null,
+          authLoading: false,
+        });
+      });
+  };
 
   loadProperty = (propertyId) => {
     this.setState({ loading: true, error: null });
@@ -52,12 +79,29 @@ class Property extends React.Component {
     }).format(price);
   };
 
+  handleLogout = () => {
+    fetch('/api/sessions', safeCredentials({
+      method: 'DELETE',
+    }))
+      .then(handleErrors)
+      .then(() => {
+        this.setState({
+          isAuthenticated: false,
+          user: null,
+        });
+        window.location.href = '/';
+      })
+      .catch(error => {
+        console.error('Error logging out:', error);
+      });
+  };
+
   render() {
-    const { property, loading, error } = this.state;
+    const { property, loading, error, user } = this.state;
 
     if (loading) {
       return (
-        <Layout>
+        <Layout user={user} onLogout={this.handleLogout}>
           <div className="text-center py-5">
             <div className="spinner-border text-primary" role="status">
               <span className="visually-hidden">Loading...</span>
@@ -70,7 +114,7 @@ class Property extends React.Component {
 
     if (error) {
       return (
-        <Layout>
+        <Layout user={user} onLogout={this.handleLogout}>
           <div className="alert alert-danger" role="alert">
             {error}
           </div>
@@ -85,7 +129,7 @@ class Property extends React.Component {
 
     if (!property) {
       return (
-        <Layout>
+        <Layout user={user} onLogout={this.handleLogout}>
           <div className="text-center py-5">
             <h4 className="text-muted">Property not found</h4>
             <p className="text-muted">The property you're looking for doesn't exist.</p>
@@ -98,7 +142,7 @@ class Property extends React.Component {
     }
 
     return (
-      <Layout>
+      <Layout user={user} onLogout={this.handleLogout}>
         <div className="row">
           <div className="col-12">
             <nav aria-label="breadcrumb">

@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { safeCredentials, handleErrors } from '@utils/fetchHelper';
 
-const Layout = ({ children }) => {
+const Layout = ({ children, user, onLogout }) => {
   return (
     <React.Fragment>
       {/* Navigation Bar */}
@@ -23,9 +24,27 @@ const Layout = ({ children }) => {
               <li className="nav-item">
                 <a className="nav-link" href="/">Home</a>
               </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/login">Login</a>
-              </li>
+              {user ? (
+                <>
+                  <li className="nav-item">
+                    <span className="navbar-text me-3">
+                      Welcome, {user.username}!
+                    </span>
+                  </li>
+                  <li className="nav-item">
+                    <button 
+                      className="btn btn-outline-secondary btn-sm"
+                      onClick={onLogout}
+                    >
+                      Logout
+                    </button>
+                  </li>
+                </>
+              ) : (
+                <li className="nav-item">
+                  <a className="nav-link" href="/login">Login</a>
+                </li>
+              )}
             </ul>
           </div>
         </div>
@@ -60,6 +79,8 @@ const Layout = ({ children }) => {
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
+  user: PropTypes.object,
+  onLogout: PropTypes.func,
 };
 
 export default Layout;
