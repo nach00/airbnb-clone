@@ -1,0 +1,414 @@
+// Import Bootstrap
+@import "bootstrap";
+
+// Virgil Abloh inspired styling - Global CSS variables and overrides
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --abloh-black: #000000;
+  --abloh-white: #ffffff;
+  --abloh-orange: #ff6600;
+  --abloh-gray: #808080;
+  --abloh-light-gray: #f5f5f5;
+  --abloh-yellow: #ffff00;
+  
+  // Override Bootstrap's primary color system
+  --bs-primary: var(--abloh-black);
+  --bs-primary-rgb: 0, 0, 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--abloh-light-gray);
+  color: var(--abloh-black);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+// Global override for any remaining Bootstrap blue
+.text-primary {
+  color: var(--abloh-black) !important;
+}
+
+.btn-outline-primary {
+  color: var(--abloh-black) !important;
+  border-color: var(--abloh-black) !important;
+  
+  &:hover {
+    background-color: var(--abloh-orange) !important;
+    border-color: var(--abloh-black) !important;
+    color: var(--abloh-black) !important;
+  }
+}
+
+// Override Bootstrap button variants globally
+.btn-primary {
+  background-color: var(--abloh-black) !important;
+  border-color: var(--abloh-black) !important;
+  color: var(--abloh-white) !important;
+  
+  &:hover, &:focus, &:active, &.active {
+    background-color: var(--abloh-orange) !important;
+    border-color: var(--abloh-black) !important;
+    color: var(--abloh-black) !important;
+  }
+  
+  &:focus {
+    box-shadow: 0 0 0 3px var(--abloh-yellow) !important;
+  }
+}
+
+// Navigation with industrial feel
+.navbar {
+  background-color: var(--abloh-white) !important;
+  border-bottom: 3px solid var(--abloh-black) !important;
+  padding: 1rem 0;
+  
+  .navbar-brand {
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--abloh-black) !important;
+    font-size: 1.5rem;
+    
+    &::before {
+      content: '▲';
+      margin-right: 8px;
+      color: var(--abloh-orange);
+    }
+    
+    &::after {
+      content: '▲';
+      margin-left: 8px;
+      color: var(--abloh-orange);
+    }
+  }
+  
+  .nav-link {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--abloh-black) !important;
+    position: relative;
+    
+    &:hover {
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--abloh-orange);
+      }
+    }
+  }
+  
+  .navbar-text {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--abloh-black) !important;
+  }
+  
+  .btn {
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    border: 3px solid var(--abloh-black);
+    background: var(--abloh-yellow);
+    color: var(--abloh-black);
+    padding: 10px 20px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--abloh-orange);
+      transition: left 0.3s ease;
+      z-index: -1;
+    }
+    
+    &::after {
+      content: '▲';
+      margin-left: 6px;
+      font-size: 0.7em;
+      transition: transform 0.3s ease;
+    }
+    
+    &:hover {
+      background: var(--abloh-orange);
+      border-color: var(--abloh-black);
+      color: var(--abloh-black);
+      transform: translateY(-2px);
+      box-shadow: 3px 3px 0px var(--abloh-black);
+      
+      &::before {
+        left: 0;
+      }
+      
+      &::after {
+        transform: rotate(45deg) scale(1.2);
+      }
+    }
+  }
+}
+
+// Page header styling
+h1 {
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--abloh-black);
+  position: relative;
+  margin-bottom: 2rem;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    left: -20px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--abloh-orange);
+  }
+  
+  &::after {
+    content: ' ™';
+    font-size: 0.6em;
+    color: var(--abloh-gray);
+    vertical-align: top;
+  }
+}
+
+// Booking card styling with industrial aesthetic
+.booking-card {
+  border: 3px solid var(--abloh-black);
+  border-radius: 0;
+  background: var(--abloh-white);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: 'BOOKING';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--abloh-yellow);
+    color: var(--abloh-black);
+    padding: 4px 8px;
+    font-size: 0.6rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    z-index: 10;
+    transform: rotate(3deg);
+    border: 1px solid var(--abloh-black);
+  }
+  
+  &:hover {
+    transform: translateY(-4px) rotate(-1deg);
+    box-shadow: 6px 6px 0px var(--abloh-black);
+    
+    &::before {
+      background: var(--abloh-orange);
+      transform: rotate(-3deg);
+    }
+    
+    .property-image {
+      filter: contrast(1.2) saturate(1.3);
+    }
+  }
+  
+  .property-image {
+    height: 150px;
+    object-fit: cover;
+    border-right: 3px solid var(--abloh-black);
+    filter: contrast(1.1) saturate(1.2);
+    transition: filter 0.3s ease;
+  }
+  
+  .card-title {
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+    color: var(--abloh-black);
+    
+    &::before {
+      content: '▶';
+      color: var(--abloh-orange);
+      margin-right: 8px;
+      font-size: 0.8em;
+    }
+  }
+  
+  .card-text {
+    font-weight: 500;
+    
+    &.text-muted {
+      color: var(--abloh-gray) !important;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+    }
+  }
+}
+
+// Booking details styling
+.booking-details {
+  margin: 1rem 0;
+  
+  .detail-row {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    
+    strong {
+      color: var(--abloh-black);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      
+      &::after {
+        content: '';
+        margin: 0 4px;
+      }
+    }
+    
+    .badge {
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border: 2px solid var(--abloh-black);
+      
+      &.bg-success {
+        background: var(--abloh-yellow) !important;
+        color: var(--abloh-black) !important;
+      }
+      
+      &.bg-warning {
+        background: var(--abloh-orange) !important;
+        color: var(--abloh-black) !important;
+      }
+    }
+  }
+}
+
+// Button styling
+.btn {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border: 3px solid var(--abloh-black);
+  padding: 10px 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  
+  &.btn-primary {
+    background: var(--abloh-black);
+    color: var(--abloh-white);
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, var(--abloh-orange), var(--abloh-yellow), var(--abloh-orange));
+      transition: left 0.3s ease;
+      z-index: -1;
+    }
+    
+    &:hover {
+      color: var(--abloh-black);
+      border-color: var(--abloh-orange);
+      transform: translateY(-2px);
+      box-shadow: 3px 3px 0px var(--abloh-black);
+      
+      &::before {
+        left: 0;
+      }
+    }
+  }
+  
+  &.btn-outline-primary {
+    background: var(--abloh-white);
+    color: var(--abloh-black);
+    border-color: var(--abloh-black);
+    
+    &:hover {
+      background: var(--abloh-orange);
+      color: var(--abloh-black);
+      border-color: var(--abloh-black);
+      transform: translateY(-2px);
+      box-shadow: 3px 3px 0px var(--abloh-black);
+    }
+  }
+}
+
+// Empty state styling
+.card {
+  border: 2px solid var(--abloh-black);
+  border-radius: 0;
+  background: var(--abloh-white);
+  
+  &.text-center {
+    position: relative;
+    
+    .card-body {
+      padding: 3rem;
+      
+      h3 {
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--abloh-black);
+        margin-bottom: 1rem;
+        
+        &::before {
+          content: '◆';
+          color: var(--abloh-orange);
+          margin-right: 12px;
+        }
+      }
+      
+      .text-muted {
+        color: var(--abloh-gray) !important;
+        font-weight: 500;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        letter-spacing: 0.05em;
+      }
+    }
+  }
+}
+
+// Alert styling
+.alert {
+  border: 2px solid var(--abloh-black);
+  border-radius: 0;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  
+  &.alert-danger {
+    background: var(--abloh-orange);
+    color: var(--abloh-black);
+    border-color: var(--abloh-black);
+  }
+}
+
+// Spinner styling
+.spinner-border {
+  border-color: var(--abloh-orange);
+  border-right-color: transparent;
+}

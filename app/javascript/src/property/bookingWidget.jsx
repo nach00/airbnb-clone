@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { safeCredentials, handleErrors } from '@utils/fetchHelper';
 
 class BookingWidget extends Component {
@@ -12,12 +13,14 @@ class BookingWidget extends Component {
       loading: false,
       error: '',
       isAuthenticated: false,
-      checkingAuth: true
+      checkingAuth: true,
+      blockedDates: []
     };
   }
 
   componentDidMount() {
     this.checkAuthentication();
+    this.fetchBlockedDates();
   }
 
   checkAuthentication = () => {
@@ -38,8 +41,87 @@ class BookingWidget extends Component {
       });
   };
 
+  fetchBlockedDates = () => {
+    // This could be enhanced to fetch actual booked dates from the API
+    // For now, we'll simulate some blocked dates
+    fetch(`/api/properties/${this.props.property.id}/bookings`, safeCredentials())
+      .then(handleErrors)
+      .then(response => response.json())
+      .then(data => {
+        if (data.bookings) {
+          const blocked = [];
+          data.bookings.forEach(booking => {
+            const start = moment(booking.start_date);
+            const end = moment(booking.end_date);
+            const current = start.clone();
+            
+            while (current.isBefore(end, 'day')) {
+              blocked.push(current.format('YYYY-MM-DD'));
+              current.add(1, 'day');
+            }
+          });
+          this.setState({ blockedDates: blocked });
+        }
+      })
+      .catch(() => {
+        // If we can't fetch blocked dates, continue with empty array
+        this.setState({ blockedDates: [] });
+      });
+  };
+
   handleDateChange = (event) => {
     const { name, value } = event.target;
+    const { blockedDates } = this.state;
+    
+    // Check if the selected date is blocked
+    if (blockedDates.includes(value)) {
+      this.setState({
+        error: 'This date is not available. Please select a different date.'
+      });
+      return;
+    }
+    
+    // If changing check-in date, validate check-out date
+    if (name === 'checkIn') {
+      const { checkOut } = this.state;
+      if (checkOut && moment(value).isSameOrAfter(moment(checkOut))) {
+        this.setState({
+          [name]: value,
+          checkOut: '', // Clear check-out if it's before or same as check-in
+          error: ''
+        });
+        return;
+      }
+    }
+    
+    // If changing check-out date, validate it's after check-in
+    if (name === 'checkOut') {
+      const { checkIn } = this.state;
+      if (checkIn && moment(value).isSameOrBefore(moment(checkIn))) {
+        this.setState({
+          error: 'Check-out date must be after check-in date.'
+        });
+        return;
+      }
+      
+      // Check if any dates between check-in and check-out are blocked
+      if (checkIn) {
+        const start = moment(checkIn);
+        const end = moment(value);
+        const current = start.clone().add(1, 'day'); // Start from day after check-in
+        
+        while (current.isBefore(end, 'day')) {
+          if (blockedDates.includes(current.format('YYYY-MM-DD'))) {
+            this.setState({
+              error: 'Some dates in your selected range are not available.'
+            });
+            return;
+          }
+          current.add(1, 'day');
+        }
+      }
+    }
+    
     this.setState({ 
       [name]: value,
       error: '' 
@@ -56,10 +138,9 @@ class BookingWidget extends Component {
   calculateNights = () => {
     const { checkIn, checkOut } = this.state;
     if (checkIn && checkOut) {
-      const start = new Date(checkIn);
-      const end = new Date(checkOut);
-      const diffTime = end - start;
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      const start = moment(checkIn);
+      const end = moment(checkOut);
+      const diffDays = end.diff(start, 'days');
       return diffDays > 0 ? diffDays : 0;
     }
     return 0;
