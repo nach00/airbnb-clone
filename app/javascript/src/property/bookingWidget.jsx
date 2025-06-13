@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { DateRangePicker } from 'react-dates';
-import moment from 'moment';
 import { safeCredentials, handleErrors } from '@utils/fetchHelper';
-import 'react-dates/lib/css/_datepicker.css';
 
 class BookingWidget extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      startDate: null,
-      endDate: null,
-      focusedInput: null,
+      checkIn: '',
+      checkOut: '',
       guests: 1,
       loading: false,
       error: '',
@@ -42,16 +38,12 @@ class BookingWidget extends Component {
       });
   };
 
-  handleDatesChange = ({ startDate, endDate }) => {
+  handleDateChange = (event) => {
+    const { name, value } = event.target;
     this.setState({ 
-      startDate, 
-      endDate,
+      [name]: value,
       error: '' 
     });
-  };
-
-  handleFocusChange = (focusedInput) => {
-    this.setState({ focusedInput });
   };
 
   handleGuestsChange = (event) => {
@@ -62,9 +54,13 @@ class BookingWidget extends Component {
   };
 
   calculateNights = () => {
-    const { startDate, endDate } = this.state;
-    if (startDate && endDate) {
-      return endDate.diff(startDate, 'days');
+    const { checkIn, checkOut } = this.state;
+    if (checkIn && checkOut) {
+      const start = new Date(checkIn);
+      const end = new Date(checkOut);
+      const diffTime = end - start;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays > 0 ? diffDays : 0;
     }
     return 0;
   };
@@ -76,14 +72,14 @@ class BookingWidget extends Component {
 
   handleBookingSubmit = (event) => {
     event.preventDefault();
-    const { startDate, endDate, guests, isAuthenticated } = this.state;
+    const { checkIn, checkOut, guests, isAuthenticated } = this.state;
 
     if (!isAuthenticated) {
       window.location.href = `/login?redirect_url=${encodeURIComponent(window.location.pathname)}`;
       return;
     }
 
-    if (!startDate || !endDate || guests < 1) {
+    if (!checkIn || !checkOut || guests < 1) {
       this.setState({ error: 'Please select dates and number of guests' });
       return;
     }
@@ -93,14 +89,20 @@ class BookingWidget extends Component {
       return;
     }
 
+    // Validate that check-out is after check-in
+    if (new Date(checkOut) <= new Date(checkIn)) {
+      this.setState({ error: 'Check-out date must be after check-in date' });
+      return;
+    }
+
     this.setState({ loading: true, error: '' });
 
     // Step 1: Create booking
     const bookingData = {
       booking: {
         property_id: this.props.property.id,
-        start_date: startDate.format('YYYY-MM-DD'),
-        end_date: endDate.format('YYYY-MM-DD'),
+        start_date: checkIn,
+        end_date: checkOut,
         guests: guests
       }
     };
@@ -185,9 +187,8 @@ To enable payments, set real Stripe API keys in Heroku config.`);
   render() {
     const { property } = this.props;
     const { 
-      startDate, 
-      endDate, 
-      focusedInput, 
+      checkIn, 
+      checkOut, 
       guests, 
       loading, 
       error, 
@@ -227,23 +228,29 @@ To enable payments, set real Stripe API keys in Heroku config.`);
 
           <form onSubmit={this.handleBookingSubmit}>
             <div className="mb-3">
-              <label className="form-label fw-semibold">Dates</label>
-              <div className="date-picker-wrapper">
-                <DateRangePicker
-                  startDate={startDate}
-                  startDateId="start_date_input"
-                  endDate={endDate}
-                  endDateId="end_date_input"
-                  onDatesChange={this.handleDatesChange}
-                  focusedInput={focusedInput}
-                  onFocusChange={this.handleFocusChange}
-                  numberOfMonths={1}
-                  isOutsideRange={(day) => moment().isAfter(day)}
-                  displayFormat="MMM DD, YYYY"
-                  hideKeyboardShortcutsPanel={true}
-                  block={true}
-                />
-              </div>
+              <label className="form-label fw-semibold">Check-in Date</label>
+              <input
+                type="date"
+                className="form-control"
+                name="checkIn"
+                value={checkIn}
+                onChange={this.handleDateChange}
+                disabled={loading}
+                min={new Date().toISOString().split('T')[0]}
+              />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label fw-semibold">Check-out Date</label>
+              <input
+                type="date"
+                className="form-control"
+                name="checkOut"
+                value={checkOut}
+                onChange={this.handleDateChange}
+                disabled={loading}
+                min={checkIn || new Date().toISOString().split('T')[0]}
+              />
             </div>
 
             <div className="mb-3">
