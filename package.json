@@ -5,8 +5,8 @@
     "node": "16.x"
   },
   "scripts": {
-    "build": "NODE_OPTIONS='--openssl-legacy-provider' webpack --mode production",
-    "heroku-postbuild": "NODE_OPTIONS='--openssl-legacy-provider' webpack --mode production"
+    "build": "webpack --mode production",
+    "heroku-postbuild": "webpack --mode production"
   },
   "dependencies": {
     "@babel/preset-react": "^7.16.7",
