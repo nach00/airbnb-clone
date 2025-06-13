@@ -1,3 +1,18 @@
+require 'open-uri'
+
+# Helper method to attach images from URLs
+def attach_image_from_url(property, url, filename)
+  begin
+    downloaded_image = URI.open(url)
+    property.images.attach(io: downloaded_image, filename: filename, content_type: 'image/jpeg')
+    puts "  ✓ Attached image for #{property.title}"
+  rescue => e
+    puts "  ✗ Failed to attach image for #{property.title}: #{e.message}"
+  end
+end
+
+puts "Seeding database with users and properties..."
+
 # Create sample users
 user1 = User.create!(
   username: 'john_host',
@@ -17,8 +32,10 @@ user3 = User.create!(
   password: 'password123'
 )
 
-# Create sample properties
-Property.create!([
+puts "Created #{User.count} users"
+
+# Create sample properties with image attachments
+properties_data = [
   {
     title: 'Cozy Downtown Apartment',
     description: 'Beautiful 1-bedroom apartment in the heart of the city. Perfect for business travelers and couples. Walking distance to restaurants, shops, and public transportation.',
@@ -30,8 +47,8 @@ Property.create!([
     bedrooms: 1,
     beds: 1,
     baths: 1,
-    image_url: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800',
-    user: user1
+    user: user1,
+    image_url: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800'
   },
   {
     title: 'Spacious Family Home',
@@ -44,8 +61,8 @@ Property.create!([
     bedrooms: 4,
     beds: 4,
     baths: 3,
-    image_url: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800',
-    user: user1
+    user: user1,
+    image_url: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800'
   },
   {
     title: 'Modern Studio Loft',
@@ -58,8 +75,8 @@ Property.create!([
     bedrooms: 0,
     beds: 1,
     baths: 1,
-    image_url: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800',
-    user: user2
+    user: user2,
+    image_url: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800'
   },
   {
     title: 'Luxury Penthouse Suite',
@@ -72,8 +89,8 @@ Property.create!([
     bedrooms: 3,
     beds: 3,
     baths: 2,
-    image_url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800',
-    user: user2
+    user: user2,
+    image_url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800'
   },
   {
     title: 'Charming Garden Cottage',
@@ -86,8 +103,8 @@ Property.create!([
     bedrooms: 2,
     beds: 2,
     baths: 1,
-    image_url: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800',
-    user: user1
+    user: user1,
+    image_url: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800'
   },
   {
     title: 'Beachfront Villa',
@@ -100,8 +117,8 @@ Property.create!([
     bedrooms: 5,
     beds: 6,
     baths: 4,
-    image_url: 'https://images.unsplash.com/photo-1520637836862-4d197d17c38a?w=800',
-    user: user2
+    user: user2,
+    image_url: 'https://images.unsplash.com/photo-1520637836862-4d197d17c38a?w=800'
   },
   {
     title: 'Urban Townhouse',
@@ -114,8 +131,8 @@ Property.create!([
     bedrooms: 3,
     beds: 3,
     baths: 2,
-    image_url: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800',
-    user: user1
+    user: user1,
+    image_url: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800'
   },
   {
     title: 'Rustic Mountain Cabin',
@@ -128,9 +145,33 @@ Property.create!([
     bedrooms: 2,
     beds: 3,
     baths: 1,
-    image_url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
-    user: user2
+    user: user2,
+    image_url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800'
   }
-])
+]
 
+# Create properties and attach images
+properties_data.each_with_index do |property_data, index|
+  image_url = property_data.delete(:image_url)
+  
+  puts "Creating property: #{property_data[:title]}"
+  
+  # Create property without validation first
+  property = Property.new(property_data)
+  property.save!(validate: false)
+  
+  # Attach image from URL
+  filename = "property_#{property.id}_image.jpg"
+  attach_image_from_url(property, image_url, filename)
+  
+  # Now validate to ensure the image attachment is valid
+  if property.valid?
+    puts "  ✓ Property validation passed"
+  else
+    puts "  ✗ Property validation failed: #{property.errors.full_messages.join(', ')}"
+  end
+end
+
+puts "\n✅ Seeding completed!"
 puts "Created #{User.count} users and #{Property.count} properties"
+puts "Images attached via ActiveStorage to S3"
