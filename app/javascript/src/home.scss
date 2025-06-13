@@ -1,20 +1,293 @@
 // Import Bootstrap
 @import "bootstrap";
 
-// Home page specific styles
+// Virgil Abloh inspired styling
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --abloh-black: #000000;
+  --abloh-white: #ffffff;
+  --abloh-orange: #ff6600;
+  --abloh-gray: #808080;
+  --abloh-light-gray: #f5f5f5;
+  --abloh-yellow: #ffff00;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--abloh-light-gray);
+  color: var(--abloh-black);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+// Abloh-style headers with quotation marks
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    left: -20px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--abloh-orange);
+  }
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 900;
+  
+  &::after {
+    content: ' ™';
+    font-size: 0.6em;
+    color: var(--abloh-gray);
+    vertical-align: top;
+  }
+}
+
+// Navigation with industrial feel
+.navbar {
+  background-color: var(--abloh-white) !important;
+  border-bottom: 3px solid var(--abloh-black) !important;
+  padding: 1rem 0;
+  
+  .navbar-brand {
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--abloh-black) !important;
+    font-size: 1.5rem;
+    
+    &::before {
+      content: '❝';
+      margin-right: 8px;
+      color: var(--abloh-orange);
+    }
+    
+    &::after {
+      content: '❞';
+      margin-left: 8px;
+      color: var(--abloh-orange);
+    }
+  }
+  
+  .nav-link {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--abloh-black) !important;
+    position: relative;
+    
+    &:hover {
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--abloh-orange);
+      }
+    }
+  }
+  
+  .navbar-text {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--abloh-black) !important;
+  }
+  
+  .btn {
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    border: 2px solid var(--abloh-black);
+    background: var(--abloh-yellow);
+    color: var(--abloh-black);
+    
+    &:hover {
+      background: var(--abloh-orange);
+      border-color: var(--abloh-black);
+      color: var(--abloh-black);
+    }
+  }
+}
+
+// Property cards with industrial aesthetic
 .property-card {
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border: 2px solid var(--abloh-black);
+  background: var(--abloh-white);
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: 'PROPERTY';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--abloh-yellow);
+    color: var(--abloh-black);
+    padding: 4px 8px;
+    font-size: 0.7rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    z-index: 10;
+    transform: rotate(3deg);
+  }
   
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-8px) rotate(-1deg);
+    box-shadow: 8px 8px 0px var(--abloh-black);
+    border-color: var(--abloh-orange);
+    
+    &::before {
+      background: var(--abloh-orange);
+      transform: rotate(-3deg);
+    }
+  }
+  
+  .card-title {
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+    
+    &::before {
+      content: '〉';
+      color: var(--abloh-orange);
+      margin-right: 8px;
+    }
+  }
+  
+  .card-text {
+    font-weight: 400;
+    line-height: 1.6;
+    
+    &.text-muted {
+      color: var(--abloh-gray) !important;
+      font-weight: 500;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+    }
   }
 }
 
 .property-image {
-  border-radius: 0.375rem 0.375rem 0 0;
+  border-radius: 0;
+  border-bottom: 2px solid var(--abloh-black);
+  filter: contrast(1.1) saturate(1.2);
+}
+
+// Buttons with Abloh styling
+.btn-primary {
+  background: var(--abloh-black);
+  border: 2px solid var(--abloh-black);
+  color: var(--abloh-white);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 12px 24px;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--abloh-orange);
+    transition: left 0.3s ease;
+    z-index: -1;
+  }
+  
+  &:hover {
+    color: var(--abloh-black);
+    border-color: var(--abloh-orange);
+    
+    &::before {
+      left: 0;
+    }
+  }
 }
 
 .load-more-btn {
-  min-width: 200px;
+  min-width: 250px;
+  margin: 2rem 0;
+  position: relative;
+  
+  &::after {
+    content: '↓';
+    margin-left: 8px;
+    font-weight: 900;
+  }
+}
+
+// Price styling
+.h4 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  color: var(--abloh-black);
+  
+  &::before {
+    content: '$';
+    color: var(--abloh-orange);
+    margin-right: 2px;
+  }
+}
+
+// Footer with industrial elements
+footer {
+  background: var(--abloh-black) !important;
+  color: var(--abloh-white);
+  border-top: 4px solid var(--abloh-orange) !important;
+  
+  h6 {
+    color: var(--abloh-white);
+    
+    &::before {
+      background: var(--abloh-orange);
+    }
+    
+    &::after {
+      content: ' ®';
+      font-size: 0.7em;
+      color: var(--abloh-gray);
+    }
+  }
+  
+  .text-muted {
+    color: var(--abloh-gray) !important;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+  }
+}
+
+// Alert styling
+.alert {
+  border: 2px solid var(--abloh-black);
+  border-radius: 0;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  
+  &.alert-danger {
+    background: var(--abloh-orange);
+    color: var(--abloh-black);
+    border-color: var(--abloh-black);
+  }
 }

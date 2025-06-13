@@ -1,55 +1,214 @@
-// BookingWidget specific styles
+// Virgil Abloh inspired BookingWidget styles
 .booking-widget {
   position: sticky;
   top: 2rem;
-  border: none;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  border: 3px solid var(--abloh-black) !important;
+  border-radius: 0 !important;
+  box-shadow: 8px 8px 0px var(--abloh-orange);
+  background: var(--abloh-white);
+  transform: rotate(1deg);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: rotate(0deg);
+    box-shadow: 12px 12px 0px var(--abloh-black);
+  }
+  
+  &::before {
+    content: 'BOOKING';
+    position: absolute;
+    top: -15px;
+    right: 20px;
+    background: var(--abloh-yellow);
+    color: var(--abloh-black);
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transform: rotate(-3deg);
+    box-shadow: 2px 2px 0px var(--abloh-black);
+  }
   
   .card-body {
-    padding: 1.5rem;
+    padding: 2rem;
   }
 }
 
-.date-picker-wrapper {
-  .DateRangePickerInput {
-    display: block;
-    border: 1px solid #ced4da;
-    border-radius: 0.375rem;
+// Form labels with industrial styling
+.form-label {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--abloh-black);
+  margin-bottom: 0.75rem;
+  position: relative;
+  
+  &::before {
+    content: '■';
+    color: var(--abloh-orange);
+    margin-right: 8px;
+    font-size: 0.8em;
+  }
+  
+  &.fw-semibold {
+    font-weight: 800;
+  }
+}
+
+// Date inputs with Abloh styling
+input[type='date'], .form-control, .form-select {
+  border: 2px solid var(--abloh-black) !important;
+  border-radius: 0 !important;
+  padding: 12px 16px;
+  font-weight: 500;
+  background: var(--abloh-white);
+  color: var(--abloh-black);
+  
+  &:focus {
+    border-color: var(--abloh-orange) !important;
+    box-shadow: 3px 3px 0px var(--abloh-orange) !important;
+    outline: none;
+  }
+  
+  &:disabled {
+    background: var(--abloh-light-gray);
+    color: var(--abloh-gray);
+  }
+}
+
+// Booking summary with industrial design
+.booking-summary {
+  background: var(--abloh-black);
+  color: var(--abloh-white);
+  padding: 1.5rem;
+  border-radius: 0;
+  margin: 1.5rem 0;
+  position: relative;
+  
+  &::before {
+    content: 'TOTAL';
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    background: var(--abloh-orange);
+    color: var(--abloh-black);
+    padding: 4px 8px;
+    font-size: 0.7rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  
+  .d-flex {
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
     
-    .DateInput {
-      width: 50%;
+    span {
+      font-weight: 600;
       
-      .DateInput_input {
-        padding: 0.375rem 0.75rem;
-        border: none;
-        font-size: 0.875rem;
-        
-        &:focus {
-          outline: none;
-        }
+      &:last-child {
+        font-weight: 900;
+        color: var(--abloh-orange);
       }
     }
+  }
+  
+  hr {
+    border: 1px solid var(--abloh-orange);
+    margin: 1rem 0;
+    opacity: 1;
+  }
+}
+
+// Reserve button with signature Abloh styling
+button[type='submit'], .btn-primary {
+  background: var(--abloh-black) !important;
+  border: 3px solid var(--abloh-black) !important;
+  color: var(--abloh-white) !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+  padding: 16px 24px !important;
+  border-radius: 0 !important;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--abloh-orange);
+    transition: left 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: -1;
+  }
+  
+  &::after {
+    content: '→';
+    margin-left: 8px;
+    font-weight: 900;
+    transition: transform 0.3s ease;
+  }
+  
+  &:hover {
+    color: var(--abloh-black) !important;
+    border-color: var(--abloh-orange) !important;
+    transform: translateY(-2px);
     
-    .DateRangePickerInput_arrow {
-      padding: 0 0.5rem;
+    &::before {
+      left: 0;
+    }
+    
+    &::after {
+      transform: translateX(4px);
     }
   }
   
-  .DateRangePicker {
-    .DateRangePickerInput__withBorder {
-      border: 1px solid #ced4da;
-      border-radius: 0.375rem;
+  &:disabled {
+    background: var(--abloh-gray) !important;
+    border-color: var(--abloh-gray) !important;
+    color: var(--abloh-white) !important;
+    transform: none;
+    
+    &::before {
+      display: none;
+    }
+    
+    &::after {
+      content: '○';
+      transform: none;
     }
   }
 }
 
-.booking-summary {
-  background-color: #f8f9fa;
-  padding: 1rem;
-  border-radius: 0.375rem;
+// Price display
+.h4, .mb-0 {
+  font-weight: 900;
+  color: var(--abloh-black);
   
-  hr {
-    margin: 0.75rem 0;
-    opacity: 0.1;
+  &:contains('$') {
+    &::before {
+      content: '';
+      color: var(--abloh-orange);
+    }
   }
+}
+
+// Spinner styling
+.spinner-border {
+  border-color: var(--abloh-orange);
+  border-right-color: transparent;
+}
+
+// Small text styling
+small {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--abloh-gray);
 }
