@@ -5,6 +5,61 @@ import { safeCredentials, handleErrors } from '@utils/fetchHelper';
 const Layout = ({ children, user, onLogout }) => {
   return (
     <React.Fragment>
+      {/* Virgil Abloh Styling */}
+      <style>{`
+        .navbar {
+          background-color: #ffffff !important;
+          border-bottom: 3px solid #000000 !important;
+          padding: 1rem 0;
+        }
+
+        .navbar-brand {
+          font-weight: 900 !important;
+          text-transform: uppercase !important;
+          letter-spacing: 0.1em !important;
+          color: #000000 !important;
+          font-size: 1.5rem !important;
+        }
+
+        .navbar-brand::before {
+          content: '▲';
+          margin-right: 8px;
+          color: #ff6600;
+        }
+
+        .navbar-brand::after {
+          content: '▲';
+          margin-left: 8px;
+          color: #ff6600;
+        }
+
+        .nav-link {
+          font-weight: 600 !important;
+          text-transform: uppercase !important;
+          letter-spacing: 0.05em !important;
+          color: #000000 !important;
+          position: relative;
+        }
+
+        .nav-link:hover {
+          color: #ff6600 !important;
+        }
+
+        .nav-link:hover::after {
+          content: '';
+          position: absolute;
+          bottom: -5px;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background: #ff6600;
+        }
+
+        .text-primary {
+          color: #000000 !important;
+        }
+      `}</style>
+
       {/* Navigation Bar */}
       <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom">
         <div className="container">

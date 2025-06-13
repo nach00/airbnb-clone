@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import HostBookings from '@src/hostBookings/hostBookings';
+import HostBookingsWithLayout from '@src/hostBookings/hostBookingsWithLayout';
 import '@src/hostBookings/hostBookings.scss';
 
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('host-bookings');
   if (container) {
-    ReactDOM.render(<HostBookings />, container);
+    ReactDOM.render(<HostBookingsWithLayout />, container);
   }
 });
