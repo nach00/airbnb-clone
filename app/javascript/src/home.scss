@@ -66,13 +66,13 @@ h1 {
     font-size: 1.5rem;
     
     &::before {
-      content: '❝';
+      content: '▲';
       margin-right: 8px;
       color: var(--abloh-orange);
     }
     
     &::after {
-      content: '❞';
+      content: '▲';
       margin-left: 8px;
       color: var(--abloh-orange);
     }
@@ -107,16 +107,49 @@ h1 {
   
   .btn {
     text-transform: uppercase;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    border: 2px solid var(--abloh-black);
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    border: 3px solid var(--abloh-black);
     background: var(--abloh-yellow);
     color: var(--abloh-black);
+    padding: 10px 20px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--abloh-orange);
+      transition: left 0.3s ease;
+      z-index: -1;
+    }
+    
+    &::after {
+      content: '▲';
+      margin-left: 6px;
+      font-size: 0.7em;
+      transition: transform 0.3s ease;
+    }
     
     &:hover {
       background: var(--abloh-orange);
       border-color: var(--abloh-black);
       color: var(--abloh-black);
+      transform: translateY(-2px);
+      box-shadow: 3px 3px 0px var(--abloh-black);
+      
+      &::before {
+        left: 0;
+      }
+      
+      &::after {
+        transform: rotate(45deg) scale(1.2);
+      }
     }
   }
 }
@@ -124,10 +157,11 @@ h1 {
 // Property cards with industrial aesthetic
 .property-card {
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  border: 2px solid var(--abloh-black);
+  border: 3px solid var(--abloh-black);
   background: var(--abloh-white);
   position: relative;
   overflow: hidden;
+  cursor: pointer;
   
   &::before {
     content: 'PROPERTY';
@@ -143,16 +177,78 @@ h1 {
     letter-spacing: 0.1em;
     z-index: 10;
     transform: rotate(3deg);
+    border: 2px solid var(--abloh-black);
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, transparent 0%, transparent 85%, var(--abloh-orange) 85%, var(--abloh-orange) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 5;
   }
   
   &:hover {
-    transform: translateY(-8px) rotate(-1deg);
-    box-shadow: 8px 8px 0px var(--abloh-black);
+    transform: translateY(-12px) rotate(-2deg) scale(1.02);
+    box-shadow: 12px 12px 0px var(--abloh-black), 24px 24px 0px var(--abloh-orange);
     border-color: var(--abloh-orange);
     
     &::before {
       background: var(--abloh-orange);
-      transform: rotate(-3deg);
+      transform: rotate(-5deg) scale(1.1);
+      animation: pulse 1s infinite;
+    }
+    
+    &::after {
+      opacity: 0.1;
+    }
+    
+    .property-image {
+      filter: contrast(1.3) saturate(1.5) brightness(1.1);
+      transform: scale(1.05);
+    }
+    
+    .card-body {
+      transform: translateY(-3px);
+    }
+  }
+  
+  .property-image {
+    transition: all 0.3s ease;
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.3) 100%);
+      transition: opacity 0.3s ease;
+    }
+  }
+  
+  .card-body {
+    padding: 1.5rem;
+    transition: transform 0.3s ease;
+    background: var(--abloh-white);
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--abloh-orange) 0%, var(--abloh-yellow) 50%, var(--abloh-orange) 100%);
     }
   }
   
@@ -160,18 +256,28 @@ h1 {
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+    position: relative;
+    transition: all 0.3s ease;
     
     &::before {
-      content: '〉';
+      content: '▶';
       color: var(--abloh-orange);
       margin-right: 8px;
+      font-size: 0.8em;
+      transition: transform 0.3s ease;
     }
+  }
+  
+  &:hover .card-title::before {
+    transform: translateX(4px);
+    color: var(--abloh-black);
   }
   
   .card-text {
     font-weight: 400;
     line-height: 1.6;
+    transition: color 0.3s ease;
     
     &.text-muted {
       color: var(--abloh-gray) !important;
@@ -179,8 +285,21 @@ h1 {
       text-transform: uppercase;
       font-size: 0.85rem;
       letter-spacing: 0.05em;
+      position: relative;
+      
+      &::before {
+        content: '■';
+        color: var(--abloh-orange);
+        margin-right: 6px;
+        font-size: 0.6em;
+      }
     }
   }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: rotate(-5deg) scale(1.1); }
+  50% { transform: rotate(-5deg) scale(1.2); }
 }
 
 .property-image {
@@ -189,17 +308,19 @@ h1 {
   filter: contrast(1.1) saturate(1.2);
 }
 
-// Buttons with Abloh styling
+// Buttons with enhanced Abloh styling
 .btn-primary {
   background: var(--abloh-black);
-  border: 2px solid var(--abloh-black);
+  border: 3px solid var(--abloh-black);
   color: var(--abloh-white);
-  font-weight: 700;
+  font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 12px 24px;
+  letter-spacing: 0.1em;
+  padding: 16px 32px;
   position: relative;
   overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: pointer;
   
   &::before {
     content: '';
@@ -208,43 +329,130 @@ h1 {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: var(--abloh-orange);
-    transition: left 0.3s ease;
+    background: linear-gradient(45deg, var(--abloh-orange), var(--abloh-yellow), var(--abloh-orange));
+    transition: left 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     z-index: -1;
+  }
+  
+  &::after {
+    content: '→';
+    margin-left: 8px;
+    font-weight: 900;
+    transition: all 0.3s ease;
   }
   
   &:hover {
     color: var(--abloh-black);
     border-color: var(--abloh-orange);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 6px 6px 0px var(--abloh-black), 12px 12px 0px var(--abloh-orange);
     
     &::before {
       left: 0;
     }
+    
+    &::after {
+      transform: translateX(4px) scale(1.2);
+    }
+  }
+  
+  &:active {
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: 3px 3px 0px var(--abloh-black), 6px 6px 0px var(--abloh-orange);
+  }
+  
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--abloh-yellow);
   }
 }
 
 .load-more-btn {
-  min-width: 250px;
-  margin: 2rem 0;
+  min-width: 280px;
+  margin: 3rem 0;
   position: relative;
+  background: var(--abloh-white) !important;
+  color: var(--abloh-black) !important;
+  border: 3px solid var(--abloh-black) !important;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, var(--abloh-black), var(--abloh-gray), var(--abloh-black));
+    transition: left 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: -1;
+  }
   
   &::after {
     content: '↓';
     margin-left: 8px;
     font-weight: 900;
+    transition: all 0.3s ease;
+  }
+  
+  &:hover {
+    color: var(--abloh-white) !important;
+    border-color: var(--abloh-black) !important;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 6px 6px 0px var(--abloh-orange), 12px 12px 0px var(--abloh-yellow);
+    
+    &::before {
+      left: 0;
+    }
+    
+    &::after {
+      transform: translateY(2px) scale(1.3);
+      animation: bounce 0.6s ease infinite;
+    }
   }
 }
 
-// Price styling
+@keyframes bounce {
+  0%, 100% { transform: translateY(2px) scale(1.3); }
+  50% { transform: translateY(6px) scale(1.3); }
+}
+
+// Enhanced price styling
 .h4 {
   font-family: 'Inter', sans-serif;
   font-weight: 900;
   color: var(--abloh-black);
+  position: relative;
+  padding: 8px 12px;
+  background: var(--abloh-white);
+  border: 2px solid var(--abloh-black);
+  display: inline-block;
+  transform: rotate(-1deg);
+  transition: all 0.3s ease;
   
   &::before {
     content: '$';
     color: var(--abloh-orange);
     margin-right: 2px;
+    font-size: 0.8em;
+    vertical-align: top;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    width: 8px;
+    height: 8px;
+    background: var(--abloh-yellow);
+    border: 1px solid var(--abloh-black);
+    transform: rotate(45deg);
+  }
+  
+  .property-card:hover & {
+    transform: rotate(2deg) scale(1.1);
+    background: var(--abloh-yellow);
+    box-shadow: 3px 3px 0px var(--abloh-black);
   }
 }
 
