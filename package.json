@@ -5,8 +5,8 @@
     "node": "16.x"
   },
   "scripts": {
-    "build": "webpack --mode production",
-    "heroku-postbuild": "webpack --mode production"
+    "build": "./bin/webpack --mode production",
+    "heroku-postbuild": "./bin/webpack --mode production"
   },
   "dependencies": {
     "@babel/preset-react": "^7.16.7",
