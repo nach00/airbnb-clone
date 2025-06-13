@@ -295,7 +295,7 @@ To enable payments, set real Stripe API keys in Heroku config.`);
             <button
               type="submit"
               className="btn btn-primary w-100"
-              disabled={loading || !startDate || !endDate}
+              disabled={loading || !checkIn || !checkOut}
             >
               {loading ? (
                 <>
