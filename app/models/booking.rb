@@ -15,6 +15,21 @@ class Booking < ApplicationRecord
   validate :no_date_conflicts
   validate :guests_within_property_limit
 
+  def is_paid?
+    charge&.complete == true
+  end
+
+  def total_amount
+    return 0 unless start_date && end_date && property
+    nights = (end_date - start_date).to_i
+    nights * property.price_per_night
+  end
+
+  def nights
+    return 0 unless start_date && end_date
+    (end_date - start_date).to_i
+  end
+
   private
 
   def end_date_after_start_date

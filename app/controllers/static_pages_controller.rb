@@ -9,7 +9,16 @@ class StaticPagesController < ApplicationController
   def login
   end
 
-  def booking_success
-    @booking_id = params[:id]
+  def my_bookings
+  end
+
+  def host_bookings
+  end
+
+  def add_property
+  end
+
+  def edit_property
+    @property_id = params[:id]
   end
 end
