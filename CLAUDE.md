@@ -34,7 +34,9 @@ This project is a full-stack Airbnb clone.
 - `foreman start -f Procfile.dev` (Recommended: starts Rails server and Webpack dev server)
 - OR:
   - `rails s` (Starts Rails server, typically on port 3000)
-  - `./bin/webpack-dev-server` (Starts Webpack dev server, typically on port 3035)
+  - `NODE_OPTIONS="--openssl-legacy-provider" ./bin/webpack-dev-server` (Starts Webpack dev server, typically on port 3035)
+
+**Note:** Due to Node.js 23 compatibility issues with older webpack versions, the `NODE_OPTIONS="--openssl-legacy-provider"` flag is required for JavaScript compilation.
 
 **Database:**
 
