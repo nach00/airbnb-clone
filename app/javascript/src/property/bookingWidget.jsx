@@ -140,22 +140,9 @@ class BookingWidget extends Component {
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          // Initialize Stripe and redirect to checkout
-          const stripeKey = process.env.STRIPE_PUBLISHABLE_KEY;
-          if (typeof window.Stripe !== 'undefined' && stripeKey && !stripeKey.includes('placeholder')) {
-            const stripe = window.Stripe(stripeKey);
-            stripe.redirectToCheckout({
-              sessionId: data.checkout_session_id
-            }).then(result => {
-              if (result.error) {
-                this.setState({
-                  error: result.error.message,
-                  loading: false
-                });
-              }
-            });
-          } else {
-            // For demo purposes, show success message instead of redirecting to Stripe
+          // Check if it's demo mode (placeholder Stripe keys)
+          if (data.demo_mode) {
+            // Demo mode - show success message instead of redirecting to Stripe
             alert(`Booking created successfully! 
             
 In production, this would redirect to Stripe payment.
@@ -163,11 +150,33 @@ Your booking ID: ${data.charge.booking_id}
 
 To enable payments, set real Stripe API keys in Heroku config.`);
             this.setState({
-              startDate: null,
-              endDate: null,
+              checkIn: '',
+              checkOut: '',
               guests: 1,
               loading: false
             });
+          } else {
+            // Production mode - initialize Stripe and redirect to checkout
+            const stripeKey = process.env.STRIPE_PUBLISHABLE_KEY;
+            if (typeof window.Stripe !== 'undefined' && stripeKey && !stripeKey.includes('placeholder')) {
+              const stripe = window.Stripe(stripeKey);
+              stripe.redirectToCheckout({
+                sessionId: data.checkout_session_id
+              }).then(result => {
+                if (result.error) {
+                  this.setState({
+                    error: result.error.message,
+                    loading: false
+                  });
+                }
+              });
+            } else {
+              // Fallback for missing Stripe.js
+              this.setState({
+                error: 'Stripe is not properly configured',
+                loading: false
+              });
+            }
           }
         } else {
           this.setState({

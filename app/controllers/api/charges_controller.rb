@@ -15,6 +15,26 @@ class Api::ChargesController < ApplicationController
       return
     end
 
+    # Check if Stripe keys are placeholders (demo mode)
+    stripe_key = ENV['STRIPE_SECRET_KEY']
+    if stripe_key.blank? || stripe_key.include?('placeholder')
+      # Demo mode - create a fake charge without Stripe
+      charge = booking.create_charge!(
+        checkout_session_id: "demo_session_#{booking.id}",
+        complete: false
+      )
+      
+      render json: { 
+        success: true, 
+        demo_mode: true,
+        charge: {
+          booking_id: booking.id,
+          checkout_session_id: charge.checkout_session_id
+        }
+      }, status: :created
+      return
+    end
+
     begin
       nights = (booking.end_date - booking.start_date).to_i
       total_amount = nights * booking.property.price_per_night
