@@ -1,4 +1,5 @@
 class Api::PropertiesController < ApplicationController
+  skip_before_action :verify_authenticity_token
   before_action :authenticate_user!, only: [:create, :update, :destroy]
   before_action :set_property, only: [:show, :update, :destroy]
   before_action :check_property_owner, only: [:update, :destroy]
@@ -19,9 +20,20 @@ class Api::PropertiesController < ApplicationController
   def create
     @property = current_user.properties.build(property_params)
     
-    if @property.save
+    # Save without image validation first
+    if @property.save(validate: false)
       attach_images if params[:images].present?
-      render 'api/properties/show', status: :created
+      
+      # Now validate with images attached
+      if @property.valid?
+        render 'api/properties/show', status: :created
+      else
+        @property.destroy
+        render json: { 
+          success: false, 
+          errors: @property.errors.full_messages 
+        }, status: :bad_request
+      end
     else
       render json: { 
         success: false, 
