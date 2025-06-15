@@ -24,9 +24,17 @@ class Api::PropertiesController < ApplicationController
   def create
     Rails.logger.info "Content-Type: #{request.content_type}"
     Rails.logger.info "Raw params: #{params.inspect}"
-    Rails.logger.info "Filtered params: #{property_params.inspect}"
     
-    @property = current_user.properties.build(property_params)
+    begin
+      filtered_params = property_params
+      Rails.logger.info "Filtered params: #{filtered_params.inspect}"
+      @property = current_user.properties.build(filtered_params)
+    rescue => e
+      Rails.logger.error "Error in property_params: #{e.message}"
+      Rails.logger.error "Backtrace: #{e.backtrace.first(5).join('\n')}"
+      render json: { success: false, error: "Parameter error: #{e.message}" }, status: :bad_request
+      return
+    end
     
     # Save without image validation first
     if @property.save(validate: false)
