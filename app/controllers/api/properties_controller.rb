@@ -3,6 +3,10 @@ class Api::PropertiesController < ApplicationController
   before_action :authenticate_user!, only: [:create, :update, :destroy]
   before_action :set_property, only: [:show, :update, :destroy]
   before_action :check_property_owner, only: [:update, :destroy]
+  
+  rescue_from ActionDispatch::Http::Parameters::ParseError do |exception|
+    render json: { success: false, error: "Invalid request format" }, status: :bad_request
+  end
 
   def index
     @properties = Property.includes(images_attachments: :blob).page(params[:page]).per(6).order(:id)
@@ -18,6 +22,9 @@ class Api::PropertiesController < ApplicationController
   end
 
   def create
+    Rails.logger.info "Content-Type: #{request.content_type}"
+    Rails.logger.info "Raw params: #{params}"
+    
     @property = current_user.properties.build(property_params)
     
     # Save without image validation first
