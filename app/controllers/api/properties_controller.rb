@@ -90,21 +90,11 @@ class Api::PropertiesController < ApplicationController
   end
 
   def property_params
-    if request.content_type == 'application/json'
-      # Handle JSON requests
-      params.permit(
-        :title, :description, :city, :country, :property_type,
-        :price_per_night, :max_guests, :bedrooms, :beds, :baths,
-        :amenities, :policies, :neighborhood
-      )
-    else
-      # Handle multipart form data requests
-      params.require(:property).permit(
-        :title, :description, :city, :country, :property_type,
-        :price_per_night, :max_guests, :bedrooms, :beds, :baths,
-        :amenities, :policies, :neighborhood
-      )
-    end
+    params.require(:property).permit(
+      :title, :description, :city, :country, :property_type,
+      :price_per_night, :max_guests, :bedrooms, :beds, :baths,
+      :amenities, :policies, :neighborhood
+    )
   end
 
   def attach_images
