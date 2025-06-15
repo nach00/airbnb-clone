@@ -114,8 +114,12 @@ class Api::PropertiesController < ApplicationController
   end
 
   def authenticate_user!
+    Rails.logger.info "Authenticating user... current_user: #{current_user.inspect}"
     if current_user.blank?
+      Rails.logger.warn "Authentication failed - no current user"
       render json: { success: false, error: 'You must be logged in' }, status: :unauthorized
+    else
+      Rails.logger.info "Authentication successful for user: #{current_user.id}"
     end
   end
 end
