@@ -72,7 +72,7 @@ class Api::PropertiesController < ApplicationController
   end
 
   def property_params
-    params.require(:property).permit(
+    params.permit(
       :title, :description, :city, :country, :property_type,
       :price_per_night, :max_guests, :bedrooms, :beds, :baths,
       :amenities, :policies, :neighborhood
