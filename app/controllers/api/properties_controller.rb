@@ -23,7 +23,8 @@ class Api::PropertiesController < ApplicationController
 
   def create
     Rails.logger.info "Content-Type: #{request.content_type}"
-    Rails.logger.info "Raw params: #{params}"
+    Rails.logger.info "Raw params: #{params.inspect}"
+    Rails.logger.info "Filtered params: #{property_params.inspect}"
     
     @property = current_user.properties.build(property_params)
     
@@ -79,11 +80,21 @@ class Api::PropertiesController < ApplicationController
   end
 
   def property_params
-    params.permit(
-      :title, :description, :city, :country, :property_type,
-      :price_per_night, :max_guests, :bedrooms, :beds, :baths,
-      :amenities, :policies, :neighborhood
-    )
+    if request.content_type == 'application/json'
+      # Handle JSON requests
+      params.permit(
+        :title, :description, :city, :country, :property_type,
+        :price_per_night, :max_guests, :bedrooms, :beds, :baths,
+        :amenities, :policies, :neighborhood
+      )
+    else
+      # Handle multipart form data requests
+      params.require(:property).permit(
+        :title, :description, :city, :country, :property_type,
+        :price_per_night, :max_guests, :bedrooms, :beds, :baths,
+        :amenities, :policies, :neighborhood
+      )
+    end
   end
 
   def attach_images
