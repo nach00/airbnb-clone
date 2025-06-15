@@ -24,6 +24,8 @@ class Api::PropertiesController < ApplicationController
   def create
     Rails.logger.info "Content-Type: #{request.content_type}"
     Rails.logger.info "Raw params: #{params.inspect}"
+    Rails.logger.info "Request body: #{request.body.read}"
+    request.body.rewind
     
     begin
       filtered_params = property_params
